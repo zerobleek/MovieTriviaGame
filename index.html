@@ -34,18 +34,11 @@ Time: <span id="timer">--</span>
 
 <div id="choices"></div>
 
-<div id="answer" class="hidden"></div>
-
-<div id="resultButtons" class="hidden">
-<button onclick="markCorrect()">I Got It Right</button>
-<button onclick="markWrong()">Got It Wrong</button>
-</div>
+<div id="result"></div>
 
 <div class="controls">
 
-<button id="actionButton" onclick="handleAction()">
-Reveal Question
-</button>
+<button id="nextButton" class="hidden" onclick="nextQuestion()">Next Question</button>
 
 <button onclick="goBack()">Back</button>
 
