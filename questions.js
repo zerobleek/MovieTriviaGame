@@ -73,11 +73,67 @@ correct:0
 ],
 
 kevin:[
+
 {
-question:"In Blade Runner which corporation makes replicants?",
+question:"In Blade Runner, which corporation manufactures replicants?",
 choices:["Tyrell Corporation","Cyberdyne Systems","OmniCorp","Weyland Corp"],
 correct:0
+},
+
+{
+question:"Who composed the score for The Good, the Bad and the Ugly?",
+choices:["Ennio Morricone","John Williams","Hans Zimmer","Nino Rota"],
+correct:0
+},
+
+{
+question:"Which director made the film Stalker?",
+choices:["Andrei Tarkovsky","Sergei Eisenstein","Nikita Mikhalkov","Elem Klimov"],
+correct:0
+},
+
+{
+question:"Which film features the character Nurse Ratched?",
+choices:["One Flew Over the Cuckoo's Nest","Misery","Psycho","The Shining"],
+correct:0
+},
+
+{
+question:"Who directed Mulholland Drive?",
+choices:["David Lynch","Paul Thomas Anderson","David Fincher","The Coen Brothers"],
+correct:0
+},
+
+{
+question:"Which film features the character Harry Lime?",
+choices:["The Third Man","The Maltese Falcon","Touch of Evil","Double Indemnity"],
+correct:0
+},
+
+{
+question:"Who directed the 1979 film Alien?",
+choices:["Ridley Scott","John Carpenter","George Romero","Tobe Hooper"],
+correct:0
+},
+
+{
+question:"Which director made the samurai epic Ran?",
+choices:["Akira Kurosawa","Takeshi Kitano","Nagisa Oshima","Hayao Miyazaki"],
+correct:0
+},
+
+{
+question:"Which film features the character Daniel Plainview?",
+choices:["There Will Be Blood","Magnolia","The Master","Phantom Thread"],
+correct:0
+},
+
+{
+question:"Who directed the horror film The Lighthouse?",
+choices:["Robert Eggers","Ari Aster","Jordan Peele","Alex Garland"],
+correct:0
 }
+
 ]
 
 }
