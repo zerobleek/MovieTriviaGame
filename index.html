@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Movie Trivia</title>
+<title>Movie Trivia Challenge</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -18,19 +18,16 @@
 <button onclick="startGame('medium')">Medium</button>
 <button onclick="startGame('hard')">Hard</button>
 <button onclick="startGame('insane')">Insane</button>
-
-<button class="kevin" onclick="startGame('kevin')">
-KEVIN MODE
-</button>
+<button class="kevin" onclick="startGame('kevin')">KEVIN MODE</button>
 
 </div>
-
 
 <div id="game" class="hidden">
 
 <div id="hud">
 Score: <span id="score">0</span> |
-Question: <span id="qnum">1</span>
+Question: <span id="qnum">1</span> |
+Time: <span id="timer">--</span>
 </div>
 
 <div id="question"></div>
@@ -39,9 +36,20 @@ Question: <span id="qnum">1</span>
 
 <div id="answer" class="hidden"></div>
 
+<div id="resultButtons" class="hidden">
+<button onclick="markCorrect()">I Got It Right</button>
+<button onclick="markWrong()">Got It Wrong</button>
+</div>
+
+<div class="controls">
+
 <button id="actionButton" onclick="handleAction()">
 Reveal Question
 </button>
+
+<button onclick="goBack()">Back</button>
+
+</div>
 
 </div>
 
