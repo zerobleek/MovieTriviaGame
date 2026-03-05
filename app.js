@@ -1,7 +1,6 @@
 let difficulty
 let pool=[]
 let currentQuestion
-let state=0
 
 let score=0
 let questionNumber=1
@@ -38,6 +37,8 @@ document.getElementById("qnum").innerText=questionNumber
 
 function nextQuestion(){
 
+clearInterval(timer)
+
 if(pool.length===0){
 
 alert("Game Over. Final Score: "+score)
@@ -46,27 +47,68 @@ return
 
 }
 
+document.getElementById("nextButton").classList.add("hidden")
+document.getElementById("result").innerText=""
+
 const index=Math.floor(Math.random()*pool.length)
 currentQuestion=pool.splice(index,1)[0]
 
-document.getElementById("question").innerText=""
-document.getElementById("choices").innerHTML=""
-document.getElementById("answer").innerText=""
-document.getElementById("answer").classList.add("hidden")
+document.getElementById("question").innerText=currentQuestion.question
 
-document.getElementById("resultButtons").classList.add("hidden")
+let html=""
 
-document.getElementById("actionButton").innerText="Reveal Question"
+currentQuestion.choices.forEach((choice,i)=>{
 
-state=0
+html+=`<button class="choice" onclick="selectAnswer(${i},this)">
+${choice}
+</button>`
+
+})
+
+document.getElementById("choices").innerHTML=html
 
 startTimer()
 
 }
 
-function startTimer(){
+function selectAnswer(choiceIndex,button){
 
 clearInterval(timer)
+
+const correctIndex=currentQuestion.correct
+
+let buttons=document.querySelectorAll(".choice")
+
+buttons.forEach((btn,i)=>{
+
+btn.disabled=true
+
+if(i===correctIndex){
+btn.classList.add("correct")
+}
+
+})
+
+if(choiceIndex===correctIndex){
+
+score++
+updateHUD()
+
+document.getElementById("result").innerText="Correct!"
+
+}else{
+
+button.classList.add("wrong")
+
+document.getElementById("result").innerText="Incorrect"
+
+}
+
+document.getElementById("nextButton").classList.remove("hidden")
+
+}
+
+function startTimer(){
 
 timeLeft = difficulty==="kevin" ? 10 : 15
 
@@ -81,74 +123,13 @@ if(timeLeft<=0){
 
 clearInterval(timer)
 
-document.getElementById("answer").innerText="Time's up!"
-document.getElementById("answer").classList.remove("hidden")
+document.getElementById("result").innerText="Time's Up!"
 
-document.getElementById("actionButton").innerText="Next Question"
-
-state=2
+document.getElementById("nextButton").classList.remove("hidden")
 
 }
 
 },1000)
-
-}
-
-function handleAction(){
-
-if(state===0){
-
-document.getElementById("question").innerText=currentQuestion.question
-
-let html=""
-
-currentQuestion.choices.forEach((c,i)=>{
-html+=`${String.fromCharCode(65+i)}) ${c}<br>`
-})
-
-document.getElementById("choices").innerHTML=html
-
-document.getElementById("actionButton").innerText="Reveal Answer"
-
-state=1
-
-}
-
-else if(state===1){
-
-clearInterval(timer)
-
-const correct=currentQuestion.choices[currentQuestion.correct]
-
-document.getElementById("answer").innerText="Correct Answer: "+correct
-document.getElementById("answer").classList.remove("hidden")
-
-document.getElementById("resultButtons").classList.remove("hidden")
-
-document.getElementById("actionButton").innerText="Next Question"
-
-state=2
-
-}
-
-else{
-
-questionNumber++
-updateHUD()
-nextQuestion()
-
-}
-
-}
-
-function markCorrect(){
-
-score++
-updateHUD()
-
-}
-
-function markWrong(){
 
 }
 
