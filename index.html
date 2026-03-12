@@ -5,7 +5,6 @@
 <title>Movie Trivia Challenge</title>
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div id="kevinOverlay"></div>
@@ -13,55 +12,42 @@
 <h1>🎬 Movie Trivia Challenge</h1>
 
 <div id="menu">
-<h2>Select Difficulty</h2>
-
-<button onclick="startGame('easy')">Easy</button>
-<button onclick="startGame('medium')">Medium</button>
-<button onclick="startGame('hard')">Hard</button>
-<button onclick="startGame('insane')">Insane</button>
-<button class="kevin" onclick="startGame('kevin')">⚠ KEVIN MODE ⚠</button>
-
+  <h2>Select Difficulty</h2>
+  <button onclick="startGame('easy')">Easy</button>
+  <button onclick="startGame('medium')">Medium</button>
+  <button onclick="startGame('hard')">Hard</button>
+  <button onclick="startGame('insane')">Insane</button>
+  <button class="kevin" onclick="startGame('kevin')">⚠ KEVIN MODE ⚠</button>
 </div>
-
 
 <div id="game" class="hidden">
-
-<div id="hud">
-Score: <span id="score">0</span> |
-Question: <span id="qnum">1</span> |
-Time: <span id="timer">15</span>
+  <div id="hud">
+    Score: <span id="score">0</span> |
+    Question: <span id="qnum">1</span> |
+    Time: <span id="timer">15</span>
+  </div>
+  <h2 id="question"></h2>
+  <div id="answers"></div>
+  <div id="result"></div>
+  <button id="nextButton" class="hidden" onclick="nextQuestion()">Next Question ▶</button>
+  <div class="controls">
+    <button id="undoBtn" onclick="undoQuestion()">Got the wrong answer?</button>
+    <button id="backBtn" onclick="backToMenu()">Back</button>
+  </div>
 </div>
-
-<h2 id="question"></h2>
-
-<div id="answers"></div>
-
-<div id="result"></div>
-
-<button id="nextButton" class="hidden" onclick="nextQuestion()">Next Question ▶</button>
-
-<div class="controls">
-<button id="undoBtn" onclick="undoQuestion()">Got the wrong answer?</button>
-<button id="backBtn" onclick="backToMenu()">Back</button>
-</div>
-
-</div>
-
 
 <div id="endScreen" class="hidden">
-<h2>Game Over</h2>
-<p>Your Score: <span id="finalScore"></span></p>
-<button onclick="backToMenu()">Play Again</button>
+  <h2>Game Over</h2>
+  <p>Your Score: <span id="finalScore"></span></p>
+  <button onclick="backToMenu()">Play Again</button>
 </div>
 
-
-<img id="kevinImage" class="hidden" src="Kevin-Reavey.jpg" width="200">
-
+<img id="kevinImage" src="Kevin-Reavey.jpg" alt="Kevin">
 
 <audio id="klaxon" src="klaxon.mp3"></audio>
 <audio id="explosion" src="explosion.mp3"></audio>
 <audio id="cat" src="cat-hiss.mp3"></audio>
-
+<audio id="toasty" src="toasty.mp3"></audio>
 
 <script src="questions.js"></script>
 <script src="app.js"></script>
