@@ -18,7 +18,7 @@
 <button onclick="startGame('medium')">Medium</button>
 <button onclick="startGame('hard')">Hard</button>
 <button onclick="startGame('insane')">Insane</button>
-<button class="kevin" onclick="startGame('kevin')">KEVIN MODE</button>
+<button class="kevin" onclick="startGame('kevin')">⚠ KEVIN MODE ⚠</button>
 
 </div>
 
@@ -30,13 +30,14 @@ Question: <span id="qnum">1</span> |
 Time: <span id="timer">--</span>
 </div>
 
+<img id="kevinBoss" class="hidden"
+src="https://www.brixmor.com/wp-content/uploads/2020/10/Kevin-Reavey.jpg">
+
 <div id="question"></div>
 
 <div id="choices"></div>
 
 <div id="result"></div>
-
-<div class="controls">
 
 <button id="nextButton" class="hidden" onclick="nextQuestion()">Next Question</button>
 
@@ -44,7 +45,9 @@ Time: <span id="timer">--</span>
 
 </div>
 
-</div>
+<audio id="klaxon" src="klaxon.mp3"></audio>
+<audio id="explosion" src="explosion.mp3"></audio>
+<audio id="catHiss" src="cat-hiss.mp3"></audio>
 
 <script src="questions.js"></script>
 <script src="app.js"></script>
