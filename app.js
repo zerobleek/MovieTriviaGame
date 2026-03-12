@@ -1,174 +1,94 @@
-let difficulty
-let pool=[]
-let currentQuestion
+let currentDifficulty;
+let questionIndex=0;
+let score=0;
 
-let score=0
-let questionNumber=1
+function startGame(diff){
 
-let timer
-let timeLeft
+currentDifficulty=diff;
+questionIndex=0;
+score=0;
 
-function startGame(level){
+document.getElementById("menu").classList.add("hidden");
+document.getElementById("game").classList.remove("hidden");
 
-difficulty=level
+if(diff==="kevin"){
+document.getElementById("kevinBoss").classList.remove("hidden");
+}else{
+document.getElementById("kevinBoss").classList.add("hidden");
+}
 
-if(level==="kevin"){
+loadQuestion();
 
-document.body.classList.add("kevin-mode")
+}
 
-document.getElementById("kevinBoss").classList.remove("hidden")
+function loadQuestion(){
 
-document.getElementById("klaxon").play()
+let set=QUESTIONS[currentDifficulty];
+let q=set[questionIndex];
 
-pool=[
-...questions.easy,
-...questions.medium,
-...questions.hard,
-...questions.insane,
-...questions.kevin
-]
+document.getElementById("question").textContent=q.question;
+
+let choicesDiv=document.getElementById("choices");
+choicesDiv.innerHTML="";
+
+q.choices.forEach((choice,index)=>{
+
+let btn=document.createElement("button");
+btn.textContent=choice;
+
+btn.onclick=()=>answer(index);
+
+choicesDiv.appendChild(btn);
+
+});
+
+document.getElementById("score").textContent="Score: "+score;
+
+}
+
+function answer(choice){
+
+let q=QUESTIONS[currentDifficulty][questionIndex];
+
+if(choice===q.correct){
+
+score++;
 
 }else{
 
-pool=[...questions[level]]
-
+if(currentDifficulty==="kevin"){
+alert("Wrong. Kevin wins.");
+location.reload();
 }
 
-document.getElementById("menu").style.display="none"
-document.getElementById("game").classList.remove("hidden")
-
-score=0
-questionNumber=1
-
-updateHUD()
-nextQuestion()
-
 }
-
-function updateHUD(){
-
-document.getElementById("score").innerText=score
-document.getElementById("qnum").innerText=questionNumber
 
 }
 
 function nextQuestion(){
 
-clearInterval(timer)
+questionIndex++;
 
-if(pool.length===0){
+if(questionIndex>=25){
 
-alert("Game Over. Final Score: "+score)
-goBack()
-return
-
-}
-
-document.getElementById("nextButton").classList.add("hidden")
-document.getElementById("result").innerText=""
-
-const index=Math.floor(Math.random()*pool.length)
-currentQuestion=pool.splice(index,1)[0]
-
-document.getElementById("question").innerText=currentQuestion.question
-
-let html=""
-
-currentQuestion.choices.forEach((choice,i)=>{
-
-html+=`<button class="choice" onclick="selectAnswer(${i},this)">
-${choice}
-</button>`
-
-})
-
-document.getElementById("choices").innerHTML=html
-
-startTimer()
+alert("Game Over! Score: "+score);
+location.reload();
+return;
 
 }
 
-function selectAnswer(choiceIndex,button){
-
-clearInterval(timer)
-
-const correctIndex=currentQuestion.correct
-
-let buttons=document.querySelectorAll(".choice")
-
-buttons.forEach((btn,i)=>{
-
-btn.disabled=true
-
-if(i===correctIndex){
-btn.classList.add("correct")
-}
-
-})
-
-if(choiceIndex===correctIndex){
-
-score++
-updateHUD()
-
-document.getElementById("result").innerText="Correct!"
-
-document.getElementById("explosion").play()
-
-}else{
-
-button.classList.add("wrong")
-
-document.getElementById("result").innerText="Incorrect"
-
-document.getElementById("catHiss").play()
-
-document.body.classList.add("shake")
-
-setTimeout(()=>document.body.classList.remove("shake"),400)
-
-if(difficulty==="kevin"){
-
-alert("Sudden Death! Game Over.")
-goBack()
-
-return
-
-}
-
-}
-
-document.getElementById("nextButton").classList.remove("hidden")
-
-}
-
-function startTimer(){
-
-timeLeft = difficulty==="kevin" ? 10 : 15
-
-document.getElementById("timer").innerText=timeLeft
-
-timer=setInterval(()=>{
-
-timeLeft--
-document.getElementById("timer").innerText=timeLeft
-
-if(timeLeft<=0){
-
-clearInterval(timer)
-
-document.getElementById("result").innerText="Time's Up!"
-
-document.getElementById("nextButton").classList.remove("hidden")
-
-}
-
-},1000)
+loadQuestion();
 
 }
 
 function goBack(){
 
-location.reload()
+questionIndex--;
+
+if(questionIndex<0){
+questionIndex=0;
+}
+
+loadQuestion();
 
 }
