@@ -38,7 +38,7 @@ font-size:18px;
 
 #question{
 font-size:26px;
-margin:30px;
+margin:20px;
 }
 
 .choice{
@@ -70,6 +70,19 @@ font-size:22px;
 display:none;
 }
 
+#timer{
+font-weight:bold;
+color:#ff4444;
+}
+
+#kevinBoss{
+width:160px;
+border-radius:50%;
+border:4px solid red;
+box-shadow:0 0 30px red;
+margin-bottom:20px;
+}
+
 .kevin-mode{
 background:black;
 color:#ff2c2c;
@@ -77,14 +90,19 @@ animation:redpulse 2s infinite;
 }
 
 @keyframes redpulse{
-
 0%{background:#000;}
 50%{background:#200000;}
 100%{background:#000;}
-
 }
 
-#timer{
-font-weight:bold;
-color:#ff4444;
+.shake{
+animation:shake 0.4s;
+}
+
+@keyframes shake{
+0%{transform:translate(0px);}
+25%{transform:translate(-5px);}
+50%{transform:translate(5px);}
+75%{transform:translate(-5px);}
+100%{transform:translate(0px);}
 }
