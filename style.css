@@ -1,0 +1,41 @@
+
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:#111;
+color:white;
+text-align:center;
+}
+
+button{
+padding:12px 18px;
+margin:8px;
+font-size:16px;
+cursor:pointer;
+}
+
+.kevin{
+background:red;
+color:white;
+font-weight:bold;
+}
+
+.hidden{
+display:none;
+}
+
+#choices button{
+display:block;
+width:300px;
+margin:10px auto;
+}
+
+#hud{
+margin-bottom:20px;
+}
+
+#kevinImage{
+position:fixed;
+bottom:10px;
+right:10px;
+width:200px;
+}
