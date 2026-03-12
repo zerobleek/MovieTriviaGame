@@ -9,6 +9,16 @@ let kevinTimeout
 
 
 
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
+
+
 function startGame(m) {
 
   clearTimeout(kevinTimeout)
@@ -19,7 +29,7 @@ function startGame(m) {
   }
 
   mode = m
-  questions = [...QUESTIONS[m]]
+  questions = shuffle([...QUESTIONS[m]])
 
   current = 0
   score = 0
