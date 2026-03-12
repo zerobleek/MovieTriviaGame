@@ -11,14 +11,31 @@ let timeLeft
 function startGame(level){
 
 difficulty=level
+
+if(level==="kevin"){
+
+document.body.classList.add("kevin-mode")
+
+document.getElementById("kevinBoss").classList.remove("hidden")
+
+document.getElementById("klaxon").play()
+
+pool=[
+...questions.easy,
+...questions.medium,
+...questions.hard,
+...questions.insane,
+...questions.kevin
+]
+
+}else{
+
 pool=[...questions[level]]
+
+}
 
 document.getElementById("menu").style.display="none"
 document.getElementById("game").classList.remove("hidden")
-
-if(level==="kevin"){
-document.body.classList.add("kevin-mode")
-}
 
 score=0
 questionNumber=1
@@ -96,11 +113,28 @@ updateHUD()
 
 document.getElementById("result").innerText="Correct!"
 
+document.getElementById("explosion").play()
+
 }else{
 
 button.classList.add("wrong")
 
 document.getElementById("result").innerText="Incorrect"
+
+document.getElementById("catHiss").play()
+
+document.body.classList.add("shake")
+
+setTimeout(()=>document.body.classList.remove("shake"),400)
+
+if(difficulty==="kevin"){
+
+alert("Sudden Death! Game Over.")
+goBack()
+
+return
+
+}
 
 }
 
