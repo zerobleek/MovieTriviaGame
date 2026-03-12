@@ -1,121 +1,140 @@
-let currentDifficulty;
-let questionIndex = 0;
-let score = 0;
+let currentDifficulty = null
+let questionIndex = 0
+let score = 0
 
-function startGame(diff) {
+const menu = document.getElementById("menu")
+const game = document.getElementById("game")
+const questionEl = document.getElementById("question")
+const choicesEl = document.getElementById("choices")
+const resultEl = document.getElementById("result")
+const scoreEl = document.getElementById("score")
+const qnumEl = document.getElementById("qnum")
+const nextBtn = document.getElementById("nextButton")
+const backBtn = document.getElementById("backButton")
+const kevinBoss = document.getElementById("kevinBoss")
 
-currentDifficulty = diff;
-questionIndex = 0;
-score = 0;
+nextBtn.onclick = nextQuestion
+backBtn.onclick = goBack
 
-document.getElementById("menu").classList.add("hidden");
-document.getElementById("game").classList.remove("hidden");
+function startGame(diff){
 
-document.getElementById("score").textContent = score;
+if(!QUESTIONS || !QUESTIONS[diff]){
+alert("Question set missing for difficulty: " + diff)
+return
+}
 
-if (diff === "kevin") {
-document.getElementById("kevinBoss").classList.remove("hidden");
+currentDifficulty = diff
+questionIndex = 0
+score = 0
+
+menu.classList.add("hidden")
+game.classList.remove("hidden")
+
+scoreEl.textContent = score
+
+if(diff === "kevin"){
+kevinBoss.classList.remove("hidden")
 } else {
-document.getElementById("kevinBoss").classList.add("hidden");
+kevinBoss.classList.add("hidden")
 }
 
-loadQuestion();
-
-}
-
-function loadQuestion() {
-
-let set = QUESTIONS[currentDifficulty];
-let q = set[questionIndex];
-
-document.getElementById("question").textContent = q.question;
-
-document.getElementById("qnum").textContent = questionIndex + 1;
-
-document.getElementById("result").textContent = "";
-
-document.getElementById("nextButton").classList.add("hidden");
-
-let choicesDiv = document.getElementById("choices");
-choicesDiv.innerHTML = "";
-
-q.choices.forEach((choice, index) => {
-
-let btn = document.createElement("button");
-
-btn.textContent = choice;
-
-btn.onclick = () => answer(index);
-
-choicesDiv.appendChild(btn);
-
-});
+loadQuestion()
 
 }
 
-function answer(choice) {
+function loadQuestion(){
 
-let q = QUESTIONS[currentDifficulty][questionIndex];
+const set = QUESTIONS[currentDifficulty]
 
-let buttons = document.querySelectorAll("#choices button");
+if(!set || !set[questionIndex]){
+questionEl.textContent = "No question found."
+choicesEl.innerHTML = ""
+return
+}
 
-buttons.forEach(btn => btn.disabled = true);
+const q = set[questionIndex]
 
-let resultDiv = document.getElementById("result");
+questionEl.textContent = q.question
 
-if (choice === q.correct) {
+qnumEl.textContent = questionIndex + 1
 
-score++;
+resultEl.textContent = ""
 
-document.getElementById("score").textContent = score;
+nextBtn.classList.add("hidden")
 
-resultDiv.textContent = "✅ Correct!";
+choicesEl.innerHTML = ""
+
+q.choices.forEach((choice,index)=>{
+
+const btn = document.createElement("button")
+
+btn.textContent = choice
+
+btn.onclick = ()=>handleAnswer(index)
+
+choicesEl.appendChild(btn)
+
+})
+
+}
+
+function handleAnswer(choice){
+
+const q = QUESTIONS[currentDifficulty][questionIndex]
+
+const buttons = choicesEl.querySelectorAll("button")
+
+buttons.forEach(b => b.disabled = true)
+
+if(choice === q.correct){
+
+score++
+scoreEl.textContent = score
+resultEl.textContent = "✅ Correct!"
 
 } else {
 
-let correctAnswer = q.choices[q.correct];
+const correctAnswer = q.choices[q.correct]
 
-resultDiv.textContent = "❌ Wrong! The answer was: " + correctAnswer;
+resultEl.textContent = "❌ Wrong! The answer was: " + correctAnswer
 
-if (currentDifficulty === "kevin") {
+if(currentDifficulty === "kevin"){
 
-setTimeout(() => {
-alert("Wrong. Kevin wins.");
-location.reload();
-}, 800);
-
-}
+setTimeout(()=>{
+alert("Wrong. Kevin wins.")
+location.reload()
+},600)
 
 }
 
-document.getElementById("nextButton").classList.remove("hidden");
+}
+
+nextBtn.classList.remove("hidden")
 
 }
 
-function nextQuestion() {
+function nextQuestion(){
 
-questionIndex++;
+questionIndex++
 
-if (questionIndex >= 25) {
+if(questionIndex >= QUESTIONS[currentDifficulty].length){
 
-alert("Game Over! Score: " + score);
-location.reload();
-return;
-
-}
-
-loadQuestion();
+alert("Game Over! Final Score: " + score)
+location.reload()
+return
 
 }
 
-function goBack() {
+loadQuestion()
 
-questionIndex--;
-
-if (questionIndex < 0) {
-questionIndex = 0;
 }
 
-loadQuestion();
+function goBack(){
+
+if(questionIndex > 0){
+questionIndex--
+}
+
+loadQuestion()
 
 }
