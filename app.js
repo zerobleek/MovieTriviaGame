@@ -32,7 +32,7 @@ function startGame(m) {
   if (mode === "kevin") {
     document.getElementById("kevinImage").classList.remove("hidden")
     document.getElementById("klaxon").play().catch(() => {})
-    document.body.classList.add("kevin-active")
+    document.getElementById("kevinOverlay").classList.add("active")
   }
 
   loadQuestion()
@@ -194,7 +194,7 @@ function endGame() {
 
   clearInterval(timer)
 
-  document.body.classList.remove("kevin-active")
+  document.getElementById("kevinOverlay").classList.remove("active")
   document.getElementById("game").classList.add("hidden")
   document.getElementById("endScreen").classList.remove("hidden")
   document.getElementById("kevinImage").classList.add("hidden")
@@ -211,7 +211,7 @@ function backToMenu() {
   setControlButtons(true)
   clearInterval(timer)
 
-  document.body.classList.remove("kevin-active")
+  document.getElementById("kevinOverlay").classList.remove("active")
   document.getElementById("menu").classList.remove("hidden")
   document.getElementById("game").classList.add("hidden")
   document.getElementById("endScreen").classList.add("hidden")
