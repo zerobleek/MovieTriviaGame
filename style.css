@@ -1,63 +1,76 @@
-body{
-font-family:Arial, Helvetica, sans-serif;
-background:#111;
-color:white;
-text-align:center;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #111;
+  color: white;
+  text-align: center;
 }
 
-button{
-padding:12px 20px;
-margin:10px;
-font-size:16px;
-cursor:pointer;
+button {
+  padding: 12px 20px;
+  margin: 10px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-.hidden{
-display:none;
+.hidden {
+  display: none;
 }
 
-.kevin{
-background:red;
-color:white;
-font-weight:bold;
+.kevin {
+  background: red;
+  color: white;
+  font-weight: bold;
 }
 
-#answers button{
-display:block;
-margin:10px auto;
-width:300px;
+#answers button {
+  display: block;
+  margin: 10px auto;
+  width: 300px;
 }
 
-.controls{
-margin-top:20px;
+.controls {
+  margin-top: 20px;
 }
 
-#hud{
-margin-bottom:20px;
+#hud {
+  margin-bottom: 20px;
 }
 
-#kevinImage{
-position:fixed;
-bottom:10px;
-right:10px;
+#kevinImage {
+  position: fixed;
+  bottom: 10px;
+  right: -250px;
+  width: 200px;
+  z-index: 999;
 }
 
-@keyframes kevinGlow{
-0%,100%{opacity:0;}
-50%{opacity:0.18;}
+@keyframes kevinToasty {
+  0%   { right: -250px; }
+  20%  { right: 10px; }
+  70%  { right: 10px; }
+  100% { right: -250px; }
 }
 
-#kevinOverlay{
-display:none;
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:red;
-pointer-events:none;
-z-index:9999;
+#kevinImage.toasty {
+  animation: kevinToasty 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-#kevinOverlay.active{
-display:block;
-animation:kevinGlow 3s ease-in-out infinite;
+@keyframes kevinGlow {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.18; }
+}
+
+#kevinOverlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: red;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+#kevinOverlay.active {
+  display: block;
+  animation: kevinGlow 3s ease-in-out infinite;
 }
