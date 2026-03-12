@@ -1,158 +1,217 @@
 let mode
 let questions
-let current=0
-let score=0
+let current = 0
+let score = 0
 
 let timer
-let timeLeft=15
+let timeLeft = 15
+let kevinTimeout
 
 
 
-function startGame(m){
+function startGame(m) {
 
-mode=m
-questions=[...QUESTIONS[m]]
+  clearTimeout(kevinTimeout)
 
-current=0
-score=0
+  if (typeof QUESTIONS === "undefined" || !QUESTIONS[m]) {
+    alert("Questions failed to load. Please refresh the page.")
+    return
+  }
 
-document.getElementById("menu").classList.add("hidden")
-document.getElementById("game").classList.remove("hidden")
-document.getElementById("endScreen").classList.add("hidden")
+  mode = m
+  questions = [...QUESTIONS[m]]
 
-if(mode==="kevin"){
+  current = 0
+  score = 0
 
-document.getElementById("kevinImage").classList.remove("hidden")
-document.getElementById("klaxon").play()
+  document.getElementById("menu").classList.add("hidden")
+  document.getElementById("game").classList.remove("hidden")
+  document.getElementById("endScreen").classList.add("hidden")
+  document.getElementById("kevinImage").classList.add("hidden")
 
-}
+  if (mode === "kevin") {
+    document.getElementById("kevinImage").classList.remove("hidden")
+    document.getElementById("klaxon").play().catch(() => {})
+  }
 
-loadQuestion()
-
-}
-
-
-
-function loadQuestion(){
-
-clearInterval(timer)
-
-if(current>=questions.length){
-
-endGame()
-return
-
-}
-
-let q=questions[current]
-
-document.getElementById("question").textContent=q.q
-document.getElementById("qnum").textContent=current+1
-document.getElementById("score").textContent=score
-
-let answersDiv=document.getElementById("answers")
-answersDiv.innerHTML=""
-
-q.a.forEach((choice,index)=>{
-
-let btn=document.createElement("button")
-btn.textContent=choice
-
-btn.onclick=function(){
-answer(index)
-}
-
-answersDiv.appendChild(btn)
-
-})
-
-startTimer()
+  loadQuestion()
 
 }
 
 
 
-function answer(i){
+function loadQuestion() {
 
-clearInterval(timer)
+  clearInterval(timer)
 
-let q=questions[current]
+  if (current >= questions.length) {
+    endGame()
+    return
+  }
 
-if(i===q.c){
+  const q = questions[current]
 
-score++
+  if (!q || !Array.isArray(q.choices)) {
+    document.getElementById("result").textContent = "Error: question data is missing."
+    return
+  }
 
-if(mode==="kevin"){
-document.getElementById("explosion").play()
-}
+  document.getElementById("question").textContent = q.question
+  document.getElementById("qnum").textContent = current + 1
+  document.getElementById("score").textContent = score
+  document.getElementById("result").textContent = ""
+  document.getElementById("nextButton").classList.add("hidden")
+  setControlButtons(true)
 
-}else{
+  const answersDiv = document.getElementById("answers")
+  answersDiv.innerHTML = ""
 
-if(mode==="kevin"){
-document.getElementById("cat").play()
-}
+  q.choices.forEach((choice, index) => {
 
-}
+    const btn = document.createElement("button")
+    btn.textContent = choice
+    btn.onclick = () => handleAnswer(index)
+    answersDiv.appendChild(btn)
 
-current++
-loadQuestion()
+  })
 
-}
-
-
-
-function undoQuestion(){
-
-clearInterval(timer)
-loadQuestion()
-
-}
-
-
-
-function startTimer(){
-
-timeLeft=15
-document.getElementById("timer").textContent=timeLeft
-
-timer=setInterval(function(){
-
-timeLeft--
-document.getElementById("timer").textContent=timeLeft
-
-if(timeLeft<=0){
-
-clearInterval(timer)
-current++
-loadQuestion()
-
-}
-
-},1000)
+  startTimer()
 
 }
 
 
 
-function endGame(){
+function handleAnswer(i) {
 
-document.getElementById("game").classList.add("hidden")
-document.getElementById("endScreen").classList.remove("hidden")
+  clearInterval(timer)
 
-document.getElementById("finalScore").textContent=score
+  const q = questions[current]
+
+  const btns = document.getElementById("answers").querySelectorAll("button")
+  btns.forEach(b => { b.disabled = true })
+
+  const resultDiv = document.getElementById("result")
+
+  if (i === q.correct) {
+
+    score++
+    document.getElementById("score").textContent = score
+    resultDiv.textContent = "✅ Correct!"
+
+    if (mode === "kevin") {
+      document.getElementById("explosion").play().catch(() => {})
+    }
+
+    showNextButton()
+
+  } else {
+
+    resultDiv.textContent = "❌ Wrong! The answer was: " + q.choices[q.correct]
+
+    if (mode === "kevin") {
+      document.getElementById("cat").play().catch(() => {})
+      setControlButtons(false)
+      kevinTimeout = setTimeout(() => endGame(), 1500)
+      return
+    }
+
+    showNextButton()
+
+  }
 
 }
 
 
 
-function backToMenu(){
+function showNextButton() {
+  document.getElementById("nextButton").classList.remove("hidden")
+}
 
-clearInterval(timer)
 
-document.getElementById("menu").classList.remove("hidden")
-document.getElementById("game").classList.add("hidden")
-document.getElementById("endScreen").classList.add("hidden")
 
-document.getElementById("kevinImage").classList.add("hidden")
+function setControlButtons(enabled) {
+  document.getElementById("undoBtn").disabled = !enabled
+  document.getElementById("backBtn").disabled = !enabled
+}
+
+
+
+function nextQuestion() {
+  current++
+  loadQuestion()
+}
+
+
+
+function undoQuestion() {
+  clearTimeout(kevinTimeout)
+  setControlButtons(true)
+  clearInterval(timer)
+  loadQuestion()
+}
+
+
+
+function startTimer() {
+
+  timeLeft = 15
+  document.getElementById("timer").textContent = timeLeft
+
+  timer = setInterval(() => {
+
+    timeLeft--
+    document.getElementById("timer").textContent = timeLeft
+
+    if (timeLeft <= 0) {
+
+      clearInterval(timer)
+
+      const btns = document.getElementById("answers").querySelectorAll("button")
+      btns.forEach(b => { b.disabled = true })
+
+      const q = questions[current]
+      document.getElementById("result").textContent = "⏰ Time's up! The answer was: " + q.choices[q.correct]
+
+      if (mode === "kevin") {
+        document.getElementById("cat").play().catch(() => {})
+        setControlButtons(false)
+        kevinTimeout = setTimeout(() => endGame(), 1500)
+        return
+      }
+
+      showNextButton()
+
+    }
+
+  }, 1000)
+
+}
+
+
+
+function endGame() {
+
+  clearInterval(timer)
+
+  document.getElementById("game").classList.add("hidden")
+  document.getElementById("endScreen").classList.remove("hidden")
+  document.getElementById("kevinImage").classList.add("hidden")
+
+  document.getElementById("finalScore").textContent = score
+
+}
+
+
+
+function backToMenu() {
+
+  clearTimeout(kevinTimeout)
+  setControlButtons(true)
+  clearInterval(timer)
+
+  document.getElementById("menu").classList.remove("hidden")
+  document.getElementById("game").classList.add("hidden")
+  document.getElementById("endScreen").classList.add("hidden")
+  document.getElementById("kevinImage").classList.add("hidden")
 
 }
