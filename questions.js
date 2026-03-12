@@ -1,32 +1,50 @@
+function generateQuestions(text, answers, correct){
+
+let arr=[]
+
+for(let i=1;i<=40;i++){
+
+arr.push({
+q:text + " #" + i,
+a:answers,
+c:correct
+})
+
+}
+
+return arr
+}
 
 const QUESTIONS = {
-easy: Array.from({length:40}, (_,i)=>({
-q:`Easy Question ${i+1}: Who directed Titanic?`,
-a:["James Cameron","Steven Spielberg","Ridley Scott","Christopher Nolan"],
-c:0
-})),
 
-medium: Array.from({length:40}, (_,i)=>({
-q:`Medium Question ${i+1}: What year did Jurassic Park release?`,
-a:["1990","1993","1995","1999"],
-c:1
-})),
+easy: generateQuestions(
+"Who directed Titanic?",
+["James Cameron","Steven Spielberg","Christopher Nolan","Ridley Scott"],
+0
+),
 
-hard: Array.from({length:40}, (_,i)=>({
-q:`Hard Question ${i+1}: Who composed the score for Star Wars?`,
-a:["Hans Zimmer","John Williams","Danny Elfman","Howard Shore"],
-c:1
-})),
+medium: generateQuestions(
+"What year was Jurassic Park released?",
+["1990","1993","1997","2001"],
+1
+),
 
-insane: Array.from({length:40}, (_,i)=>({
-q:`Insane Question ${i+1}: In what film does the character Travis Bickle appear?`,
-a:["Taxi Driver","Heat","Scarface","The Godfather"],
-c:0
-})),
+hard: generateQuestions(
+"Who composed the Star Wars score?",
+["Hans Zimmer","John Williams","Danny Elfman","Howard Shore"],
+1
+),
 
-kevin: Array.from({length:40}, (_,i)=>({
-q:`Kevin Mode ${i+1}: What movie features a building exploding at the end?`,
-a:["Die Hard","Speed","Fight Club","All of them"],
-c:3
-}))
+insane: generateQuestions(
+"In which film does Travis Bickle appear?",
+["Taxi Driver","Scarface","Heat","The Godfather"],
+0
+),
+
+kevin: generateQuestions(
+"What movie features an exploding building?",
+["Die Hard","Speed","Fight Club","All of them"],
+3
+)
+
 }
